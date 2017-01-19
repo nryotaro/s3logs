@@ -21,3 +21,5 @@ print(tempdir)
 
 for k in log_file_key_name_tuples: 
     bucket.download_file(k['key'], tempdir + '/' + k['filename'])
+
+return [tempdir + '/' + k['filename'] for k in log_file_key_name_tuples]
