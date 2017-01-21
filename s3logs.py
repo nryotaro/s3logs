@@ -27,8 +27,6 @@ for k in log_file_key_name_tuples:
 return [tempdir + '/' + k['filename'] for k in log_file_key_name_tuples]
 """
 
-
-
 files = os.listdir('logs') 
 
 def parse_log_line(line):
@@ -57,5 +55,12 @@ def access_logs(log_file_paths):
             access = access + filter(lambda e: filter_code(e), [parse_log_line(l) for l in f.readlines()])
     return access
 
+def cnt(d, e):
+    d[e] = d[e] + 1 if d.has_key(e) else 1
+    return d
 a = access_logs(files)
+
+result = {"keys": reduce(lambda acc, c: cnt(acc,c), [e['key']for e in a], {}), \
+          "referrers": reduce(lambda a, b: cnt(a,b), [e['referrer'] for e in a], {}), \
+          "user_agents": set([e['user_agent'] for e in a])}
 
