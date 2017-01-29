@@ -10,5 +10,6 @@ bucket = s3.Bucket(bucket_name)
 
 class S3Obj:
   def write(self, obj_bytes): 
-     self.obj_bytes = obj_bytes
-
+     self._obj_bytes = obj_bytes
+  def read(self):
+     return  self._obj_bytes
