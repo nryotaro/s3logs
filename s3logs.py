@@ -4,13 +4,19 @@ import boto3
 import tempfile as t
 import re
 import os
+import sys
 
-"""
-bucket_name = 'bucket_name'
 
+
+bucket_name = sys.argv[1]
 s3 = boto3.resource('s3')
 bucket = s3.Bucket(bucket_name)
 
+def log_object_keys(bucket_name, s3):
+    objects = s3.meta.client.list_objects_v2(Bucket=bucket_name, Prefix='logs/2')
+    return [o['Key'] for o in objects['Contents']]
+
+"""
 obj_keys = [o.key for o in bucket.objects.all()] # all objects
 log_file_keys = filter(lambda obj_key: re.search('^logs/\d{4}', obj_key), obj_keys)
 
@@ -27,6 +33,8 @@ for k in log_file_key_name_tuples:
 return [tempdir + '/' + k['filename'] for k in log_file_key_name_tuples]
 """
 
+
+"""
 files = os.listdir('logs') 
 
 def parse_log_line(line):
@@ -63,4 +71,4 @@ a = access_logs(files)
 result = {"keys": reduce(lambda acc, c: cnt(acc,c), [e['key']for e in a], {}), \
           "referrers": reduce(lambda a, b: cnt(a,b), [e['referrer'] for e in a], {}), \
           "user_agents": set([e['user_agent'] for e in a])}
-
+"""
